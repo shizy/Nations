@@ -24,12 +24,12 @@ public class Sql implements DataSource {
 	
 	public Sql(Nations instance) {
 		plugin = instance;
-		DB_NAME = plugin.properties.getProperty("mysql_db_name");
+		DB_NAME = plugin.config.get("mysql_db_name");
 		initSqlConnection("jdbc:mysql://" + 
-						  plugin.properties.getProperty("mysql_url") + ":" +
-						  plugin.properties.getProperty("mysql_port"), 
-						  plugin.properties.getProperty("mysql_user"), 
-						  plugin.properties.getProperty("mysql_pass"));
+						  plugin.config.get("mysql_url") + ":" +
+						  plugin.config.get("mysql_port"), 
+						  plugin.config.get("mysql_user"), 
+						  plugin.config.get("mysql_pass"));
 		//Look for tables and load data if it exists
 	}
 	

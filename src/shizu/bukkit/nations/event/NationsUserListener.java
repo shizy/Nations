@@ -30,7 +30,7 @@ public class NationsUserListener extends PlayerListener {
 			plugin.userManager.setupUser(player);
 		} else {
 			
-			if (Boolean.parseBoolean(plugin.properties.getProperty("auto_registration"))) {
+			if (Boolean.parseBoolean(plugin.config.get("auto_registration"))) {
 				
 				plugin.userManager.registerUser(player);
 				plugin.userManager.setupUser(player);

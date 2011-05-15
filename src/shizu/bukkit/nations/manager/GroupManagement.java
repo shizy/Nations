@@ -98,6 +98,13 @@ public class GroupManagement extends Management {
 		}
 	}
 	
+	/**
+	 * Invites a User to the commanding User's nation.
+	 * 
+	 * @param user The commanding User
+	 * @param invited The User to invite
+	 * @return true if an invitation was sent, false otherwise
+	 */
 	public Boolean inviteUserToNation(User user, String invited) {
 		
 		if (!plugin.userManager.exists(invited)) {
@@ -125,6 +132,13 @@ public class GroupManagement extends Management {
 		}
 	}
 	
+	/**
+	 * Kicks a User from the commanding User's nation.
+	 * 
+	 * @param user The commanding User
+	 * @param kicked The User to kick
+	 * @return true if the User was kicked, false otherwise
+	 */
 	public Boolean kickUserFromNation(User user, String kicked) {
 		
 		if (!plugin.userManager.exists(kicked)) {
@@ -156,7 +170,7 @@ public class GroupManagement extends Management {
 		}
 	}
 	
-	//TODO: test	
+	//TODO: test !!!!!!
 	/**
 	 * Allows leaders to promote other members of the same nation to leader status.
 	 * 
@@ -168,16 +182,30 @@ public class GroupManagement extends Management {
 		User member = plugin.userManager.getUser(promoted);
 		Group nation = this.getGroup(user.getNation());
 		
-		if (user.getNation().equals(member.getNation()) && plugin.userManager.isLeader(user)) {
-			nation.addLeader(promoted);
+		if (!plugin.userManager.exists(promoted)) {
+			user.message("That user does not exist or is not registered!");
+			return false;
+		}
+		
+		if (plugin.userManager.isLeader(user)) {
+
+			if (user.getNation().equals(member.getNation())) {
+				
+				nation.addLeader(promoted);
+				plugin.groupManager.messageGroup(nation.getName(), promoted + " has been promoted to leadership!");
+				return true;
+			} else {
+				user.message("You cannot promote users outside of your nation!");	
+				return false;
+			}
 		}
 		else {
-			user.message("That is not a valid member to promote.");
+			user.message("You must be the leader of your nation to promote a member!");
+			return false;
 		}
-		return true;
 	}
 	
-	//TODO: test
+	//TODO: test !!!!!!!!!!
 	/**
 	 * Allows leaders to demote other members of the same nation from leader status.
 	 * 
@@ -189,15 +217,36 @@ public class GroupManagement extends Management {
 		User member = plugin.userManager.getUser(demoted);
 		Group nation = this.getGroup(user.getNation());
 		
-		if (user.getNation().equals(member.getNation()) && plugin.userManager.isLeader(user)) {
-			nation.removeLeader(demoted);
+		if (!plugin.userManager.exists(demoted)) {
+			user.message("That user does not exist or is not registered!");
+			return false;
+		}
+		
+		if (plugin.userManager.isLeader(user)) {
+			
+			if (user.getNation().equals(member.getNation())) {
+			
+				nation.removeLeader(demoted);
+				plugin.groupManager.messageGroup(nation.getName(), demoted + " has been demoted from leadership!");
+				return true;
+			} else {
+				user.message("You cannot demote users outside of your own nation!");
+				return false;
+			}
 		}
 		else {
-			user.message("That is not a valid member to demote.");
+			user.message("You must be the leader of your nation to demote a leader!");
+			return false;
 		}
-		return true;
 	}
 	
+	/**
+	 * Joins a User to the given Nation as a member.
+	 * 
+	 * @param user The User to join
+	 * @param nation The Nation to join
+	 * @return true if the User has joined, false otherwise
+	 */
 	public Boolean joinNation(User user, String nation) {
 	
 		if (!exists(nation)) {
@@ -220,6 +269,12 @@ public class GroupManagement extends Management {
 		return false;
 	}
 	
+	/**
+	 * Removes a User from the Nation they are currently in.
+	 * 
+	 * @param user The commanding User
+	 * @return true if the user left, false otherwise
+	 */
 	public Boolean leaveNation(User user) {
 	
 		if (!user.getNation().equals("")) {

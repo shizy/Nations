@@ -29,6 +29,11 @@ public class User extends NAWObject {
 		nationInvites = new ArrayList<String>();
 	}
 	
+	/**
+	 * Add an invite to the User's invite collection.
+	 * 
+	 * @param nation The inviting Nation
+	 */
 	public void addInvite(String nation) {
 		
 		nationInvites.add(nation);
@@ -36,12 +41,18 @@ public class User extends NAWObject {
 		message("Type: '/naw invites accept " + nation + "' to join");
 	}
 	
+	/**
+	 * Clears all invites from the User's invite collection.
+	 */
 	public void clearInvites() {
 		
 		nationInvites.clear();
 	}
 	
 	//TODO: bug, does not work
+	/**
+	 * View all invities in the invite collection
+	 */
 	public void viewInvites() {
 		
 		if (hasInvites()) {
@@ -59,11 +70,22 @@ public class User extends NAWObject {
 		}
 	}
 	
+	/**
+	 * Checks to see if the User has an invite from a particular Nation.
+	 * 
+	 * @param nation The Nation to check for
+	 * @return true if the invitation exists, false otherwise
+	 */
 	public Boolean hasInvite(String nation) {
 		
 		return nationInvites.contains(nation);
 	}
 	
+	/**
+	 * Checks to see if the User has any invites.
+	 * 
+	 * @return true if any invitations exist, false otherwise
+	 */
 	public Boolean hasInvites() {
 		
 		return !nationInvites.isEmpty();

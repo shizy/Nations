@@ -29,7 +29,7 @@ public abstract class Management {
 	public Management(Nations instance) {
 		
 		plugin = instance;
-		database = (DataSource) (Boolean.parseBoolean(plugin.properties.getProperty("use_mysql")) ? new Sql(plugin) : new FlatFile(plugin));
+		database = (DataSource) (Boolean.parseBoolean(plugin.config.get("use_mysql")) ? new Sql(plugin) : new FlatFile(plugin));
 	}
 	
 	/**

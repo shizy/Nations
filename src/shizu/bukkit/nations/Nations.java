@@ -1,7 +1,5 @@
 package shizu.bukkit.nations;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -32,6 +30,7 @@ public class Nations extends JavaPlugin {
 
 	private static final Logger log = Logger.getLogger("Minecraft");
 
+	public Config config = new Config(this);
 	public PlotManagement plotManager = new PlotManagement(this);
 	public UserManagement userManager = new UserManagement(this);
 	public GroupManagement groupManager = new GroupManagement(this);
@@ -89,7 +88,7 @@ public class Nations extends JavaPlugin {
 						user.message(yellow + "clear" + white + " - Clears all invites from your invite list.");
 					}
 					
-					if (args[1].equalsIgnoreCase("")) {
+					if (args[1].equalsIgnoreCase("view")) {
 						user.viewInvites();
 					}
 					
@@ -258,6 +257,6 @@ public class Nations extends JavaPlugin {
 	}
 	
 	public World getWorld() {
-		return this.getServer().getWorld(properties.getProperty("world_name"));
+		return this.getServer().getWorld(config.get("world_name"));
 	}
 }

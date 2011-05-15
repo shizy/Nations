@@ -107,6 +107,9 @@ public class UserManagement extends Management {
 			collection.put(user.getName(), user);
 			saveObject(user.getName());
 			
+			user.message("Welcome to Nations at War!");
+			user.message("Type: '/naw help' to see a list of commands.");
+			
 			if (user.hasInvites()) {
 				user.message("You have nation invites!");
 				user.message("Type: '/naw invites' to see the nation(s) you've been invited to!");
@@ -118,6 +121,14 @@ public class UserManagement extends Management {
 		}
 	}
 	
+	/**
+	 * Accepts an invite to join a particular nation. Upon acceptance, the user
+	 * becomes a member of that nation.
+	 * 
+	 * @param user The commanding user
+	 * @param nation The accepted invitation's nation
+	 * @return true if the invitation was accepted, false otherwise
+	 */
 	public Boolean acceptInvite(User user, String nation) {
 		
 		if (!plugin.groupManager.exists(nation)) {
@@ -150,7 +161,7 @@ public class UserManagement extends Management {
 		
 		if (!user.getLocationKey().equals(locKey)) {
 			
-			if (Boolean.parseBoolean(plugin.properties.getProperty("location_spam"))) {
+			if (Boolean.parseBoolean(plugin.config.get("location_spam"))) {
 				updateLocationDescription(user, locKey);
 			}
 
@@ -163,6 +174,11 @@ public class UserManagement extends Management {
 	}
 	
 	//TODO: find a more efficient way
+	/**
+	 * Updates the location description for all users at the given location key
+	 * 
+	 * @param locKey The location key
+	 */
 	public void setLocationDescriptionForAll(String locKey) {
 		
 		for (String player : collection.keySet()) {
