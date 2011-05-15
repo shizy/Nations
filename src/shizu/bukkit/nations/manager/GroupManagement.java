@@ -168,7 +168,7 @@ public class GroupManagement extends Management {
 		User member = plugin.userManager.getUser(promoted);
 		Group nation = this.getGroup(user.getNation());
 		
-		if (user.getNation() == member.getNation() && plugin.userManager.isLeader(member) == false) {
+		if (user.getNation().equals(member.getNation()) && plugin.userManager.isLeader(user)) {
 			nation.addLeader(promoted);
 		}
 		else {
@@ -189,7 +189,7 @@ public class GroupManagement extends Management {
 		User member = plugin.userManager.getUser(demoted);
 		Group nation = this.getGroup(user.getNation());
 		
-		if (user.getNation() == member.getNation() && plugin.userManager.isLeader(member) == true) {
+		if (user.getNation().equals(member.getNation()) && plugin.userManager.isLeader(user)) {
 			nation.removeLeader(demoted);
 		}
 		else {

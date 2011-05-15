@@ -3,7 +3,6 @@ package shizu.bukkit.nations;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
@@ -32,8 +31,7 @@ public class Nations extends JavaPlugin {
 	// TODO: Add color to player notifications
 
 	private static final Logger log = Logger.getLogger("Minecraft");
-	
-	public Properties properties = new Properties();
+
 	public PlotManagement plotManager = new PlotManagement(this);
 	public UserManagement userManager = new UserManagement(this);
 	public GroupManagement groupManager = new GroupManagement(this);
@@ -41,14 +39,6 @@ public class Nations extends JavaPlugin {
 	public NationsUserListener userListener = new NationsUserListener(this);
     
 	public void onEnable() {
-		
-		//TODO: create wrapper class for Properties; defaults, detect and create, etc.
-		try {
-		    properties.load(new FileInputStream("plugins\\naw.properties"));
-		    sendToLog("Config file loaded");
-		} catch (IOException e) {
-			sendToLog("Unable to load config file!");
-		}
 		
 		PluginManager pm = getServer().getPluginManager();
 
