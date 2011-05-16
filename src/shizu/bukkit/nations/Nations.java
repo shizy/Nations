@@ -12,8 +12,11 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.iConomy.*;
+
 import shizu.bukkit.nations.event.NationsBlockListener;
 import shizu.bukkit.nations.event.NationsUserListener;
+import shizu.bukkit.nations.event.iConomyListener;
 import shizu.bukkit.nations.manager.GroupManagement;
 import shizu.bukkit.nations.manager.PlotManagement;
 import shizu.bukkit.nations.manager.UserManagement;
@@ -25,11 +28,13 @@ import shizu.bukkit.nations.object.User;
  * @author Shizukesa
  */
 public class Nations extends JavaPlugin {
-	
-	// TODO: Add color to player notifications
 
 	private static final Logger log = Logger.getLogger("Minecraft");
 
+	//**ICONOMY**
+	public iConomy money = null;
+	public iConomyListener iconListener = new iConomyListener(this);
+	
 	public Config config = new Config(this);
 	public PlotManagement plotManager = new PlotManagement(this);
 	public UserManagement userManager = new UserManagement(this);
@@ -48,6 +53,12 @@ public class Nations extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_QUIT, userListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_KICK, userListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, userListener, Event.Priority.High, this);
+		
+		//**ICONOMY**
+		pm.registerEvent(Event.Type.PLUGIN_ENABLE, iconListener, Event.Priority.Monitor, this);
+        pm.registerEvent(Event.Type.PLUGIN_DISABLE, iconListener, Event.Priority.Monitor, this);
+        
+        
 
 		plotManager.loadAll();
 		groupManager.loadAll();

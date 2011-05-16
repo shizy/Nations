@@ -38,7 +38,7 @@ public class FlatFile implements DataSource {
 	 * 
 	 * @return true if directories exist or are created, false otherwise
 	 */
-	private Boolean initFileStructure() {
+	private boolean initFileStructure() {
 		
 		File folder;
 		

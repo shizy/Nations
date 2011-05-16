@@ -56,7 +56,7 @@ public class UserManagement extends Management {
 	 * @return true if the User is a leader of their own nation group,
 	 * 		   false otherwise
 	 */
-	public Boolean isLeader(User user) {
+	public boolean isLeader(User user) {
 		
 		if (plugin.groupManager.exists(user.getNation())) {
 			return (plugin.groupManager.getGroup(user.getNation()).hasLeader(user.getName())) ? true : false;
@@ -129,7 +129,7 @@ public class UserManagement extends Management {
 	 * @param nation The accepted invitation's nation
 	 * @return true if the invitation was accepted, false otherwise
 	 */
-	public Boolean acceptInvite(User user, String nation) {
+	public boolean acceptInvite(User user, String nation) {
 		
 		if (!plugin.groupManager.exists(nation)) {
 			user.message("That nation does not exist or no longer exists!");
@@ -155,7 +155,7 @@ public class UserManagement extends Management {
 	 * @param user The User to update
 	 * @return true if the location data was updated, false otherwise
 	 */
-	public Boolean updateLocation(User user) {
+	public boolean updateLocation(User user) {
 		
 		String locKey = plugin.plotManager.getLocationKey(user.getLocation());
 		

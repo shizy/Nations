@@ -41,7 +41,7 @@ public class GroupManagement extends Management {
 	 * @param name The name of the new nation Group
 	 * @return true if the nation was founded, false otherwise
 	 */
-	public Boolean foundNation(User user, String name) {
+	public boolean foundNation(User user, String name) {
 		
 		// TODO: Case insensitive check on nation name
 		if (!exists(name)) {
@@ -76,7 +76,7 @@ public class GroupManagement extends Management {
 	 * @param name The new nation name
 	 * @return true if the nation was renamed, false otherwise
 	 */
-	public Boolean renameNation(User user, String name) {
+	public boolean renameNation(User user, String name) {
 		
 		if (exists(name)) {
 			
@@ -128,7 +128,7 @@ public class GroupManagement extends Management {
 	 * @param rate The new tax rate
 	 * @return true if the tax rate was set, false otherwise
 	 */
-	public Boolean setTaxRate(User user, int rate) {
+	public boolean setTaxRate(User user, int rate) {
 		
 		if (!user.getNation().equals("")) {
 			
@@ -195,7 +195,7 @@ public class GroupManagement extends Management {
 	 * @param invited The User to invite
 	 * @return true if an invitation was sent, false otherwise
 	 */
-	public Boolean inviteUserToNation(User user, String invited) {
+	public boolean inviteUserToNation(User user, String invited) {
 		
 		if (!plugin.userManager.exists(invited)) {
 			
@@ -229,7 +229,7 @@ public class GroupManagement extends Management {
 	 * @param kicked The User to kick
 	 * @return true if the User was kicked, false otherwise
 	 */
-	public Boolean kickUserFromNation(User user, String kicked) {
+	public boolean kickUserFromNation(User user, String kicked) {
 		
 		if (!plugin.userManager.exists(kicked)) {
 			
@@ -266,7 +266,7 @@ public class GroupManagement extends Management {
 	 * @param user The User that is promoting the member.
 	 * @param promoted The User that is being promoted
 	 */
-	public Boolean promoteUser(User user, String promoted) {
+	public boolean promoteUser(User user, String promoted) {
 
 		User member = plugin.userManager.getUser(promoted);
 		Group nation = this.getGroup(user.getNation());
@@ -300,7 +300,7 @@ public class GroupManagement extends Management {
 	 * @param user The User that is demoting the leader.
 	 * @param promoted The User that is being demoted
 	 */
-	public Boolean demoteUser(User user, String demoted) {
+	public boolean demoteUser(User user, String demoted) {
 
 		User member = plugin.userManager.getUser(demoted);
 		Group nation = this.getGroup(user.getNation());
@@ -335,7 +335,7 @@ public class GroupManagement extends Management {
 	 * @param nation The Nation to join
 	 * @return true if the User has joined, false otherwise
 	 */
-	public Boolean joinNation(User user, String nation) {
+	public boolean joinNation(User user, String nation) {
 	
 		if (!exists(nation)) {
 			
@@ -363,7 +363,7 @@ public class GroupManagement extends Management {
 	 * @param user The commanding User
 	 * @return true if the user left, false otherwise
 	 */
-	public Boolean leaveNation(User user) {
+	public boolean leaveNation(User user) {
 	
 		if (!user.getNation().equals("")) {
 			

@@ -42,10 +42,10 @@ public class Sql implements DataSource {
 	 * @param pass The password with which to access the database
 	 * @return Returns true on a successful connection, false on error
 	 */
-	private Boolean initSqlConnection(String url, String user, String pass) {
+	private boolean initSqlConnection(String url, String user, String pass) {
 		
 		try {
-			Boolean exists = false;
+			boolean exists = false;
 			Class.forName(SQL_DRIVER);
 			Connection sqlConn = DriverManager.getConnection(url, user, pass);
 			DatabaseMetaData dm = sqlConn.getMetaData();

@@ -76,7 +76,7 @@ public class PlotManagement extends Management {
 	 * @param user The User claiming the Plot
 	 * @return true if the Plot was created, false otherwise
 	 */
-	public Boolean claimPlot(User user) {
+	public boolean claimPlot(User user) {
 		
 		String locKey = user.getLocationKey();
 
@@ -112,7 +112,7 @@ public class PlotManagement extends Management {
 	 * @param user The user purchasing the Plot
 	 * @return true if the Plot was purchased, false otherwise
 	 */
-	public Boolean buyPlot(User user) {
+	public boolean buyPlot(User user) {
 		
 		String locKey = user.getLocationKey();
 		Plot plot = getPlotAtUser(user);
@@ -173,7 +173,7 @@ public class PlotManagement extends Management {
 	 * @param user The User destroying the Plot
 	 * @return true if the Plot was destroyed, false otherwise
 	 */
-	public Boolean razePlot(User user) {
+	public boolean razePlot(User user) {
 		
 		String locKey = user.getLocationKey();
 		Plot plot = getPlotAtUser(user);
@@ -208,7 +208,7 @@ public class PlotManagement extends Management {
 	 * @return true if the Plot resale status was toggled, false
 	 * 		   otherwise
 	 */
-	public Boolean resellPlot(User user) {
+	public boolean resellPlot(User user) {
 		
 		String locKey = user.getLocationKey();
 		Plot plot = getPlotAtUser(user);
@@ -246,7 +246,7 @@ public class PlotManagement extends Management {
 	 * @return true if the Plot rent status was toggled, false
 	 * 		   otherwise
 	 */
-	public Boolean rentPlot(User user) {
+	public boolean rentPlot(User user) {
 		
 		String locKey = user.getLocationKey();
 		Plot plot = getPlotAtUser(user);
@@ -284,7 +284,7 @@ public class PlotManagement extends Management {
 	 * @param region The new region description
 	 * @return true if the Plot's region was renamed, false otherwise
 	 */
-	public Boolean setRegion(User user, String region) {
+	public boolean setRegion(User user, String region) {
 		
 		String locKey = user.getLocationKey();
 		Plot plot = getPlotAtUser(user);

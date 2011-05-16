@@ -38,7 +38,7 @@ public abstract class Management {
 	 * @param key The 'collection' HashMap key of the object to find
 	 * @return true if the object exists, false otherwise
 	 */
-	public Boolean exists(String key) {
+	public boolean exists(String key) {
 		
 		return (collection.containsKey(key)) ? true : false;
 	}
@@ -79,7 +79,7 @@ public abstract class Management {
 	 * @param key The 'collection' HashMap key of the object to load
 	 * @return true if an object was loaded, false if the object is null
 	 */
-	public Boolean loadObject(String key) {
+	public boolean loadObject(String key) {
 		
 		NAWObject obj = database.load(type, key);
 		
