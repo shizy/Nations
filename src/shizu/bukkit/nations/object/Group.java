@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Group extends NAWObject {
 
 	private String name;
+	private int tax;
 	private ArrayList<String> members;
 	private ArrayList<String> leaders;
 	private ArrayList<String> plots;
@@ -22,6 +23,7 @@ public class Group extends NAWObject {
 	public Group(String n) {
 
 		name = n;
+		tax = 0;
 		members = new ArrayList<String>();
 		leaders = new ArrayList<String>();
 		plots = new ArrayList<String>();
@@ -102,6 +104,16 @@ public class Group extends NAWObject {
 	public ArrayList<String> getEnemies() {
 		
 		return enemies;
+	}
+	
+	/**
+	 * Returns the tax rate associated with this group. (iConomy)
+	 * 
+	 * @return the tax rate
+	 */
+	public int getTax() {
+		
+		return tax;
 	}
 	
 	/**
@@ -227,5 +239,25 @@ public class Group extends NAWObject {
 		if (hasPlot(key)) {
 			plots.remove(plots.indexOf(key));
 		}
+	}
+	
+	/**
+	 * Sets the name for the group
+	 * 
+	 * @param n The new name for the group
+	 */
+	public void setName(String n) {
+		
+		name = n;
+	}
+	
+	/**
+	 * Sets the tax rate for the group. (iConomy)
+	 * 
+	 * @param t the new tax rate
+	 */
+	public void setTax(int t) {
+		
+		tax = t;
 	}
 }

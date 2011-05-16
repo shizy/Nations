@@ -182,11 +182,11 @@ public class Nations extends JavaPlugin {
 					}
 					
 					if (args[1].equalsIgnoreCase("rename")) {
-						//PLACEHOLDER - renames the nation
+						groupManager.renameNation(user, args[2]);
 					}
 					
 					if (args[1].equalsIgnoreCase("tax")) {
-						//PLACEHOLDER - sets the tax rate for the nation; used for renting/buying plots, maybe more?
+						groupManager.setTaxRate(user, Integer.valueOf(args[2]));
 					}
 				}
 				

@@ -36,9 +36,15 @@ public class Config {
 	
 	private void check() {
 		
-		File file = new File("plugins\\naw.properties"); 
+		File folder = new File("plugins\\naw\\");
+		File file = new File("plugins\\naw\\naw.properties"); 
 		
 		try {
+			if (!folder.exists()) {
+			
+				folder.mkdirs();
+			}
+			
 			if (!file.exists()) {
 				
 				file.createNewFile();
@@ -50,6 +56,7 @@ public class Config {
 					out.newLine();
 				}
 				out.close();
+				plugin.sendToLog("naw.properties not found, creating it with default configurations");
 				
 			} else {
 				

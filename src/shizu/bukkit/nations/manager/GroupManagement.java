@@ -39,8 +39,9 @@ public class GroupManagement extends Management {
 	 * 
 	 * @param user The User creating the nation Group
 	 * @param name The name of the new nation Group
+	 * @return true if the nation was founded, false otherwise
 	 */
-	public void foundNation(User user, String name) {
+	public Boolean foundNation(User user, String name) {
 		
 		// TODO: Case insensitive check on nation name
 		if (!exists(name)) {
@@ -54,13 +55,101 @@ public class GroupManagement extends Management {
 				collection.put(name, group);
 				saveObject(name);
 				plugin.messageAll("The Nation of '" + name + "' has been founded!");
+				return true;
 			} else {
+				
 				user.message("You are already a member of a nation. You must leave that nation before you can found a new one!");
+				return false;
 			}
 		} else {
+			
 			user.message("A Nation with that name already exists!");
+			return false;
+		}	
+	}
+	
+	/**
+	 * Renames a nation and updates the ownership info for all members and plots in
+	 * the nation.
+	 * 
+	 * @param user The commanding user
+	 * @param name The new nation name
+	 * @return true if the nation was renamed, false otherwise
+	 */
+	public Boolean renameNation(User user, String name) {
+		
+		if (exists(name)) {
+			
+			user.message("A Nation with that name already exists!");
+			return false;
 		}
 		
+		if (!user.getNation().equals("")){
+			
+			Group nation = getGroup(user.getNation());
+			
+			if (nation.hasLeader(user.getName())) {
+				
+				plugin.messageAll("The Nation of '" + user.getNation() + "' is now the Nation of '" + name + "'!");
+				deleteObject(user.getNation());
+				nation.setName(name);
+				collection.put(name, nation);
+				saveObject(name);
+				
+				for (String plot : nation.getPlots()) {
+					
+					plugin.plotManager.getPlot(plot).setOwner(name);
+				}
+				
+				for (String member : nation.getMembers()) {
+					
+					plugin.userManager.getUser(member).setNation(name);
+				}
+				
+				return true;
+				
+			} else {
+				
+				user.message("You must be a leader to rename the nation!");
+				return false;
+			}
+		} else {
+			
+			user.message("You are not part of a nation, and therefore, cannot rename it!");
+			return false;
+		}
+		
+	}
+	
+	/**
+	 * Sets the tax rate for the nation
+	 * 
+	 * @param user The commanding user
+	 * @param rate The new tax rate
+	 * @return true if the tax rate was set, false otherwise
+	 */
+	public Boolean setTaxRate(User user, int rate) {
+		
+		if (!user.getNation().equals("")) {
+			
+			Group nation = getGroup(user.getNation());
+			
+			if (nation.hasLeader(user.getName())) {
+				
+				nation.setTax(rate);
+				messageGroup(nation.getName(), "The " + user.getNation() + " tax rate is now %" + nation.getTax());
+				return true;
+				
+			} else {
+				
+				user.message("You must be a leader to set the tax rate!");
+				return false;
+			}
+		} else {
+			
+			user.message("You must be the leader of a nation to set a tax rate!");
+			return false;
+		}
 	}
 	
 	/**
@@ -71,6 +160,7 @@ public class GroupManagement extends Management {
 	 * @param status The status of the diplomatic relationship (ally, neutral, enemy)
 	 */
 	public void changeStatus(User user, String nation, String status) {
+		
 		Group group = getGroup(user.getNation());
 		
 		if (this.exists(nation) == true) {
@@ -170,7 +260,6 @@ public class GroupManagement extends Management {
 		}
 	}
 	
-	//TODO: test !!!!!!
 	/**
 	 * Allows leaders to promote other members of the same nation to leader status.
 	 * 
@@ -205,7 +294,6 @@ public class GroupManagement extends Management {
 		}
 	}
 	
-	//TODO: test !!!!!!!!!!
 	/**
 	 * Allows leaders to demote other members of the same nation from leader status.
 	 * 
