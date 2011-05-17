@@ -51,7 +51,7 @@ public class User extends NAWObject {
 	
 	//TODO: bug, does not work
 	/**
-	 * View all invities in the invite collection
+	 * View all invites in the invite collection
 	 */
 	public void viewInvites() {
 		

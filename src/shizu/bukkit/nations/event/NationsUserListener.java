@@ -28,6 +28,7 @@ public class NationsUserListener extends PlayerListener {
 		if (plugin.userManager.exists(name)) {
 			
 			plugin.userManager.setupUser(player);
+			
 		} else {
 			
 			if (Boolean.parseBoolean(plugin.config.get("auto_registration"))) {

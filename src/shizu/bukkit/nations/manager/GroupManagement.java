@@ -7,6 +7,8 @@ import shizu.bukkit.nations.object.Group;
 import shizu.bukkit.nations.object.NAWObject;
 import shizu.bukkit.nations.object.User;
 
+import com.iConomy.*;
+
 /**
  * Manages instances of the Group class and their interactions
  * between the server and data source.
@@ -52,6 +54,7 @@ public class GroupManagement extends Management {
 				group.addMember(user.getName());
 				group.addLeader(user.getName());
 				user.setNation(name);
+				iConomy.Accounts.create(name);
 				collection.put(name, group);
 				saveObject(name);
 				plugin.messageAll("The Nation of '" + name + "' has been founded!");
@@ -121,6 +124,10 @@ public class GroupManagement extends Management {
 		
 	}
 	
+	public double getTaxRate(User user) {
+		return getGroup(user.getNation()).getTax();
+	}
+	
 	/**
 	 * Sets the tax rate for the nation
 	 * 
@@ -128,7 +135,7 @@ public class GroupManagement extends Management {
 	 * @param rate The new tax rate
 	 * @return true if the tax rate was set, false otherwise
 	 */
-	public boolean setTaxRate(User user, int rate) {
+	public boolean setTaxRate(User user, double rate) {
 		
 		if (!user.getNation().equals("")) {
 			
@@ -136,9 +143,16 @@ public class GroupManagement extends Management {
 			
 			if (nation.hasLeader(user.getName())) {
 				
-				nation.setTax(rate);
-				messageGroup(nation.getName(), "The " + user.getNation() + " tax rate is now %" + nation.getTax());
-				return true;
+				if (rate < 100 && rate > 0) {
+					nation.setTax(rate);
+					messageGroup(nation.getName(), "The " + user.getNation() + " tax rate is now %" + nation.getTax());
+					return true;
+				}
+				
+				else {
+					user.message("You must enter a number between 0 and 100.");
+					return false;
+				}
 				
 			} else {
 				

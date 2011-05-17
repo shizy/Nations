@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Group extends NAWObject {
 
 	private String name;
-	private int tax;
+	private double tax;
 	private ArrayList<String> members;
 	private ArrayList<String> leaders;
 	private ArrayList<String> plots;
@@ -23,7 +23,7 @@ public class Group extends NAWObject {
 	public Group(String n) {
 
 		name = n;
-		tax = 0;
+		tax = 0.0;
 		members = new ArrayList<String>();
 		leaders = new ArrayList<String>();
 		plots = new ArrayList<String>();
@@ -111,7 +111,7 @@ public class Group extends NAWObject {
 	 * 
 	 * @return the tax rate
 	 */
-	public int getTax() {
+	public double getTax() {
 		
 		return tax;
 	}
@@ -256,7 +256,7 @@ public class Group extends NAWObject {
 	 * 
 	 * @param t the new tax rate
 	 */
-	public void setTax(int t) {
+	public void setTax(double t) {
 		
 		tax = t;
 	}

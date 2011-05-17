@@ -9,6 +9,9 @@ import shizu.bukkit.nations.object.NAWObject;
 import shizu.bukkit.nations.object.Plot;
 import shizu.bukkit.nations.object.User;
 
+import com.iConomy.*;
+import com.iConomy.system.Holdings;
+
 /**
  * Manages instances of the User class and their interactions
  * between the server and data source.
@@ -47,6 +50,20 @@ public class UserManagement extends Management {
 	public User getUser(String name) {
 		
 		return (exists(name)) ? (User) collection.get(name) : null;
+	}
+	
+	/**
+	 * Taxes the user by the percentage of his nation's tax rate.
+	 */
+	public void taxUser(String name, double amount) {
+		Holdings balance = iConomy.getAccount(name).getHoldings();
+		Holdings treasury = iConomy.getAccount(getUser(name).getNation()).getHoldings();
+		double tax = amount * (plugin.groupManager.getTaxRate(this.getUser(name)) / 100);
+		
+		balance.add(amount - tax);
+		treasury.add(tax);
+		
+		getUser(name).message("You have received $" + amount + ". ($" + (amount - tax) + " after tax.)");
 	}
 	
 	/**

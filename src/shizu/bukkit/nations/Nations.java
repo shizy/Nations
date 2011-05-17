@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
@@ -41,6 +42,8 @@ public class Nations extends JavaPlugin {
 	public GroupManagement groupManager = new GroupManagement(this);
 	public NationsBlockListener blockListener = new NationsBlockListener(this);
 	public NationsUserListener userListener = new NationsUserListener(this);
+	
+	SimpleCommandMap userCommands;
     
 	public void onEnable() {
 		
@@ -77,6 +80,7 @@ public class Nations extends JavaPlugin {
 		
 		String name = ((Player) sender).getDisplayName();
 		User user = (userManager.exists(name)) ? userManager.getUser((Player) sender) : null;
+		userCommands = new SimpleCommandMap(this.getServer());
 		
 		ChatColor yellow = ChatColor.getByCode(14);
 		ChatColor white = ChatColor.getByCode(15);
@@ -84,6 +88,14 @@ public class Nations extends JavaPlugin {
 		if (user != null) {
 			
 			if (commandLabel.equalsIgnoreCase("naw")) {
+				
+				if (args[0].equalsIgnoreCase("add")) {
+					userManager.taxUser(name, Double.parseDouble(args[1]));
+				}
+				
+				if (args[0].equalsIgnoreCase("treasury")) {
+					user.message("Treasury: $" + iConomy.getAccount(user.getNation()).getHoldings());
+				}
 				
 				if (args[0].equalsIgnoreCase("help")) {
 					user.message(yellow + "Main command list: invites, plot, nation, diplomacy");
@@ -197,7 +209,7 @@ public class Nations extends JavaPlugin {
 					}
 					
 					if (args[1].equalsIgnoreCase("tax")) {
-						groupManager.setTaxRate(user, Integer.valueOf(args[2]));
+						groupManager.setTaxRate(user, Double.valueOf(args[2]));
 					}
 				}
 				
