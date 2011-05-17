@@ -1,5 +1,6 @@
 package shizu.bukkit.nations.manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Location;
@@ -201,6 +202,28 @@ public class PlotManagement extends Management {
 	}
 	
 	/**
+	 * Razes all plots associated with a Group
+	 * @param plots ArrayList<String> of plots from the group that must be razed.
+	 * @return
+	 */
+	public Boolean razeGroupPlots(ArrayList<String> plots)
+	{
+		Boolean result = true;
+		for (String plotKey : plots)
+		{
+			if(exists(plotKey))
+			{
+				plugin.userManager.setLocationDescriptionForAll(plotKey);
+				collection.remove(plotKey);
+				deleteObject(plotKey);
+			}
+			else
+				result = false;
+		}
+		return result;
+	}
+	
+	/**
 	 * Flags a Plot as being available for resale by the commanding
 	 * User/Nation.
 	 * 
@@ -233,7 +256,7 @@ public class PlotManagement extends Management {
 			return true;
 		} else {
 			
-			user.message("You must be the leader of this nation to resell this plot!");
+			user.message("You must be a leader of this nation to resell this plot!");
 			return false;
 		}
 	}

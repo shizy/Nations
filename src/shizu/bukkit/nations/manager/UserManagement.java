@@ -59,7 +59,7 @@ public class UserManagement extends Management {
 	public Boolean isLeader(User user) {
 		
 		if (plugin.groupManager.exists(user.getNation())) {
-			return (plugin.groupManager.getGroup(user.getNation()).hasLeader(user.getName())) ? true : false;
+			return (plugin.groupManager.getGroup(user.getNation()).hasLeader(user.getName()));
 		} 
 		
 		return false;
