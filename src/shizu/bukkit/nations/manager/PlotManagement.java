@@ -1,5 +1,6 @@
 package shizu.bukkit.nations.manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Location;
@@ -198,6 +199,30 @@ public class PlotManagement extends Management {
 			user.message("You must be the leader of this nation to raze this plot!");
 			return false;
 		}
+	}
+	
+	/**
+	 * Razes all plots associated with a Group
+	 * @param plots ArrayList<String> of plots from the group that must be razed.
+	 * @return true if razes succeeded, false if razes failed.
+	 */
+	public Boolean razeGroupPlots(ArrayList<String> plots)
+	{
+		Boolean result = true;
+		for (String plotKey : plots)
+		{
+			if(exists(plotKey))
+			{
+				plugin.userManager.setLocationDescriptionForAll(plotKey);
+				collection.remove(plotKey);
+				deleteObject(plotKey);
+			}
+			else
+				// Reaching this code would imply that something bad happened and that there were
+				// plots in the group that never made it to prime-time (PlotManager.collection)
+				result = false;
+		}
+		return result;
 	}
 	
 	/**

@@ -1,6 +1,9 @@
 package shizu.bukkit.nations.object;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import shizu.bukkit.nations.enums.GroupMemberType;
 
 /**
  * The Nations at War Group object.
@@ -18,6 +21,8 @@ public class Group extends NAWObject {
 	private ArrayList<String> allies;
 	private ArrayList<String> enemies;
 	
+
+	
 	// TODO: tie in with Permissions groups (String[] getGroups() ? )
 	
 	public Group(String n) {
@@ -29,6 +34,7 @@ public class Group extends NAWObject {
 		plots = new ArrayList<String>();
 		allies = new ArrayList<String>();
 		enemies = new ArrayList<String>();
+
 	}
 	
 	/**

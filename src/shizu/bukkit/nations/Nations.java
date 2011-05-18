@@ -262,6 +262,13 @@ public class Nations extends JavaPlugin {
 					}
 				}
 				
+				/*	Voting section
+				 * 
+				 */
+				if(args[0].equalsIgnoreCase("vote"))
+				{
+					// TODO: Jerik will fill this in.
+				}
 			}
 			
 			return true;

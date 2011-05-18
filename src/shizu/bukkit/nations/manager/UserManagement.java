@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.bukkit.entity.Player;
 
 import shizu.bukkit.nations.Nations;
+import shizu.bukkit.nations.enums.GroupMemberType;
 import shizu.bukkit.nations.object.NAWObject;
 import shizu.bukkit.nations.object.Plot;
 import shizu.bukkit.nations.object.User;
@@ -155,7 +156,7 @@ public class UserManagement extends Management {
 		
 		if (user.hasInvite(nation)) {
 			
-			plugin.groupManager.messageGroup(nation, user.getName() + " has joined " + nation + "!");
+			plugin.groupManager.messageGroup(nation, GroupMemberType.MEMBERS, user.getName() + " has joined " + nation + "!");
 			plugin.groupManager.joinNation(user, nation);
 			user.clearInvites();
 			return true;

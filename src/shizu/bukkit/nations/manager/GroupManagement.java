@@ -3,6 +3,8 @@ package shizu.bukkit.nations.manager;
 import java.util.HashMap;
 
 import shizu.bukkit.nations.Nations;
+import shizu.bukkit.nations.enums.GroupMemberType;
+import shizu.bukkit.nations.enums.VoteResponse;
 import shizu.bukkit.nations.object.Group;
 import shizu.bukkit.nations.object.NAWObject;
 import shizu.bukkit.nations.object.User;
@@ -145,7 +147,7 @@ public class GroupManagement extends Management {
 				
 				if (rate < 100 && rate > 0) {
 					nation.setTax(rate);
-					messageGroup(nation.getName(), "The " + user.getNation() + " tax rate is now %" + nation.getTax());
+					messageGroup(nation.getName(), GroupMemberType.MEMBERS, "The " + user.getNation() + " tax rate is now %" + nation.getTax());
 					return true;
 				}
 				
@@ -262,7 +264,7 @@ public class GroupManagement extends Management {
 				kickee.setNation("");
 				group.removeMember(kickee.getName());
 				group.removeLeader(kickee.getName());
-				plugin.groupManager.messageGroup(user.getNation(), kicked + " has been kicked from the nation!");
+				plugin.groupManager.messageGroup(user.getNation(), GroupMemberType.MEMBERS, kicked + " has been kicked from the nation!");
 				return true;
 			} else {
 				user.message("This user does not belong to your nation, and cannot be kicked!");
@@ -295,7 +297,7 @@ public class GroupManagement extends Management {
 			if (user.getNation().equals(member.getNation())) {
 				
 				nation.addLeader(promoted);
-				plugin.groupManager.messageGroup(nation.getName(), promoted + " has been promoted to leadership!");
+				plugin.groupManager.messageGroup(nation.getName(), GroupMemberType.MEMBERS, promoted + " has been promoted to leadership!");
 				return true;
 			} else {
 				user.message("You cannot promote users outside of your nation!");	
@@ -329,7 +331,7 @@ public class GroupManagement extends Management {
 			if (user.getNation().equals(member.getNation())) {
 			
 				nation.removeLeader(demoted);
-				plugin.groupManager.messageGroup(nation.getName(), demoted + " has been demoted from leadership!");
+				plugin.groupManager.messageGroup(nation.getName(), GroupMemberType.MEMBERS, demoted + " has been demoted from leadership!");
 				return true;
 			} else {
 				user.message("You cannot demote users outside of your own nation!");
@@ -394,26 +396,158 @@ public class GroupManagement extends Management {
 		return false;
 	}
 	
-	public void disbandNation() {
-		//PLACEHOLDER for JERRIK
+	/**
+	 * Disbands a nation, razing all plots and removing all members and leaders.
+	 * @param user
+	 * The user that initiated the disband
+	 * @param groupKey
+	 * The key for the group to be disbanded
+	 */
+	public void disbandNation(User user, String groupKey)
+	{		
+		// TODO: It may be useful to set this on a timer to allow people to get their affairs in order
+		Group group = getGroup(groupKey);
+		
+		if (group.hasLeader(user.getName()))
+		{
+			String disbandStartMsg = "Despair denizens of " + group.getName() + "! Your nation is ending!" ;
+			String disbandFinishMsg = group.getName() + " has been lost to the dusts of time!";			
+			this.messageGroup(groupKey, GroupMemberType.MEMBERS, disbandStartMsg);
+			
+			// Remove all plots. Should be first so people are not locked out of their stuff.
+			Boolean result = plugin.plotManager.razeGroupPlots(group.getPlots());
+			if (result)
+				messageGroup(groupKey, GroupMemberType.MEMBERS, "All plots razed.");
+			else
+				messageGroup(groupKey, GroupMemberType.MEMBERS, "Error: Some plots not razed! (GroupManagement.disbandNation)");
+			
+			// Remove all leaders.
+			for (String leader : group.getLeaders())
+			{
+				group.removeLeader(leader);
+			}
+			messageGroup(groupKey, GroupMemberType.MEMBERS, group.getName() +"'s leaders deposed!");
+			
+			// Remove all members and let them know how that shit be.
+			for (String member : group.getMembers())
+			{
+				group.removeLeader(member);
+				User memberToRemove = plugin.userManager.getUser(member);
+				memberToRemove.message(group.getName() +"is gone. You are thrust into the wilderness alone!");
+				memberToRemove.setNation("");
+			}
+			plugin.getServer().broadcastMessage(disbandFinishMsg);
+		}
+		else
+			user.message("You lack the autority to disband a Nation.");
 	}
 	
 	/**
-	 * Sends a message to all members in the provided Group.
-	 * 
-	 * @param key The name of the Group
-	 * @param message The message to send
+	 * Sends a message to a subset of group members.
+	 * @param key 
+	 * The key for the group to message
+	 * @param memberType 
+	 * The subset of members to send the message to, based on type.
+	 * @param message 
+	 * The message to send.
 	 */
-	public void messageGroup(String key, String message) {
-		
+	public void messageGroup(String key, GroupMemberType memberType, String message)
+	{
+
 		Group group = getGroup(key);
-		
-		for (String member : group.getMembers()) {
-			
-			User user = plugin.userManager.getUser(member);
-			user.message("[" + key + "]: " + message);
+		switch(memberType)
+		{
+		case NONLEADERS:
+			for (String member : group.getMembers())
+			{
+				User user = plugin.userManager.getUser(member);
+				if(group.hasMember(member) && !group.hasLeader(member))
+						user.message("[" + key + "]: " + message);
+			}
+			break;
+		case LEADERS:
+			for (String member : group.getMembers())
+			{
+				User user = plugin.userManager.getUser(member);
+				if(group.hasLeader(member))
+						user.message("[" + key + "]: " + message);
+			}
+			break;
+		case MEMBERS:
+			for (String member : group.getMembers())
+			{
+				User user = plugin.userManager.getUser(member);
+				if(group.hasMember(member))
+						user.message("[" + key + "]: " + message);
+			}
+			break;
 		}
 	}
+	
+	
+	/**
+	 * Initiates a vote in the User's group.
+	 * @param user The user that initiated the vote
+	 * @param targetGroup The group 
+	 * @return
+	 */
+	public boolean startGroupVote(User user, GroupMemberType targetGroup, String issueOnTable)
+	{
+		// TODO: UNFINISHED -- Jerik
+		boolean result = false;
+		Group group = this.getGroup(user.getNation());
+		
+		if(user.getNation().equals(""))
+		{
+			user.message("You are not a member of any Nation!");
+		} else // If the user is in a Nation
+		{	
+			if (targetGroup == GroupMemberType.LEADERS)
+				if(group.hasLeader(user.getName()))
+				{
+					//group.setVotingGroup(targetGroup); group.setVoteInProgress(true);
+					result = true;
+				}
+				else
+				{
+					user.message("You cannot start a Leadership vote.");
+				}
+			else
+				//group.setVotingGroup(targetGroup); group.setVoteInProgress(true);
+				result = true;
+		}		
+		
+		if (result)
+			messageGroup(group.getName(), targetGroup, "Vote initiated by " + user.getName() + "Voting is now open for one minute.");
+			//group.resetVoteStartTime();
+		
+		return result;
+	}
+	
+	// TODO: Finish --Jerik
+	public void placeVote(User user, VoteResponse vote)
+	{
+		//Group group = getGroup(user.getNation());
+		//if(group.isVoteInProgress())
+		{
+			
+		}
+	}
+	
+	// TODO: Finish --Jerik
+	public int getNumberOfActivePlayers()
+	{
+		int result = 0;
+		
+		//for(String player : members)
+		{
+			
+			
+		}
+		
+		return result;
+	}
+	
 	
 	public void createGroup() {
 		//PLACEHOLDER
