@@ -137,34 +137,7 @@ public class UserManagement extends Management {
 			plugin.sendToLog("Error loading user: " + player.getDisplayName());
 		}
 	}
-	
-	/**
-	 * Accepts an invite to join a particular nation. Upon acceptance, the user
-	 * becomes a member of that nation.
-	 * 
-	 * @param user The commanding user
-	 * @param nation The accepted invitation's nation
-	 * @return true if the invitation was accepted, false otherwise
-	 */
-	public boolean acceptInvite(User user, String nation) {
-		
-		if (!plugin.groupManager.exists(nation)) {
-			user.message("That nation does not exist or no longer exists!");
-			return false;
-		}	
-		
-		if (user.hasInvite(nation)) {
-			
-			plugin.groupManager.messageGroup(nation, user.getName() + " has joined " + nation + "!");
-			plugin.groupManager.joinNation(user, nation);
-			user.clearInvites();
-			return true;
-		} else {
-			user.message("You have not been invited to join that nation!");
-			return false;
-		}
-	}
-	
+
 	/**
 	 * Detects when a User has moved to a new chunk and updates
 	 * their location data.
